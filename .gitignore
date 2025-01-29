@@ -1,9 +1,9 @@
 # dependencies
 /node_modules
 
-# misc
+# environment variables
+config.env
+.env
+
+# macOS system file
 .DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
