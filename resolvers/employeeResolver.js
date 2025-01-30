@@ -1,4 +1,6 @@
 const Employee = require("../models/Employee");
+const fs = require("fs");
+const path = require("path");
 
 // employee resolver
 module.exports = {
@@ -18,7 +20,11 @@ module.exports = {
   },
 
   Mutation: {
-    addEmployee: async (_, args) => {
+    // this is a simplified version for including file uploads and will have to be updated once the frontend is built out
+    addEmployee: async (_, args, { req }) => {
+      if (req.file) {
+        args.employee_photo = `uploads/employees/${req.file.filename}`;
+      }
       const employee = new Employee(args);
       return await employee.save();
     },
