@@ -90,7 +90,11 @@ http://localhost:4000/graphql
 
 ### **🔑 Authentication**
 
-- `signup(username, email, password)`: Register a new user.
+- ## `signup(username, email, password)`: Register a new user.
+  - Username must be 3-25 characters, contain only letters and numbers, and is stored in lowercase.
+  - Email must be valid and unique.
+  - Password must be at least 6 characters long and contain at least one number.
+  - If a username or email is already in use, an error is returned.
 - `login(username, password)`: Authenticate user and get a JWT token.
 
 ### **🧍 Employee Management**
@@ -144,6 +148,16 @@ http://localhost:4000/graphql
 - Import the **Postman collection** (if available).
 - Use **GraphQL queries/mutations** to test.
 - Check **uploaded images** in `uploads/employees/`.
+
+---
+
+## 🛠 **API Error Handling**
+
+- If a user tries to signup with an existing username or email, an error is returned.
+- Password validation requires at least one number—otherwise, an error is thrown.
+- If a user provides an invalid username or password during login, the system returns a generic error to prevent security leaks.
+- Employee email must be unique—if an email already exists in the employee collection, an error is returned.
+- Employee salary must be at least 1,000, but not more than 1,000,000-otherwise, an error is returned.
 
 ---
 

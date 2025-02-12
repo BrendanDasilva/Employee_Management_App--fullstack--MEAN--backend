@@ -21,11 +21,18 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Password is required"],
     minlength: [6, "Password cannot be less than 6 characters"],
+    validate: {
+      validator: function (value) {
+        return /\d/.test(value); // ensures password contains a number
+      },
+      message: "Password must contain at least one number",
+    },
   },
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now },
 });
 
+// pre-save hook to update updated_at timestamp
 userSchema.pre("save", function (next) {
   this.updated_at = Date.now();
   next();
