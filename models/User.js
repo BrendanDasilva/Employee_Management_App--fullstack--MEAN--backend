@@ -21,7 +21,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Password is required"],
     minlength: [6, "Password cannot be less than 6 characters"],
-    maxLength: [25, "Password cannot be more than 25 characters"],
   },
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now },
