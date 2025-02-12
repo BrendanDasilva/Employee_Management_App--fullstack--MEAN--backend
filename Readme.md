@@ -36,7 +36,7 @@ COMP3133_backend/
 │️— uploads/             # Stores uploaded images (Git ignored)
 │️— postman-tests/       # Postman collections (API tests)
 │   ├️— users_collection.json
-│   ├️— employees_collection.json
+│   └️— employees_collection.json
 │️— .env                 # Environment variables (Git ignored)
 │️— server.js            # Express & Apollo GraphQL setup
 │️— package.json         # Project dependencies
