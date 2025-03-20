@@ -5,7 +5,7 @@ const validator = require("validator"); // replaces regex for email validation
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
-    required: [, "Username is required"],
+    required: [true, "Username is required"],
     unique: true,
     maxlength: [25, "Username cannot be more than 25 characters"],
     match: [/^[a-zA-Z0-9]+$/, "Username can only contain letters and numbers"],
