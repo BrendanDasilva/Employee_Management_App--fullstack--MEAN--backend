@@ -17,11 +17,13 @@ const userTypeDefs = gql`
   }
 
   type Query {
-    login(username: String!, password: String!): AuthPayload
+    me: User
   }
 
   type Mutation {
     signup(username: String!, email: String!, password: String!): User
+    login(username: String!, password: String!): AuthPayload
+    logout: Boolean
   }
 `;
 
