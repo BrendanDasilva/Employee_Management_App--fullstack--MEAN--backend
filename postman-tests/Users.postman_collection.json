@@ -14,7 +14,7 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "mutation {\n  signup(username: \"brendan\", email: \"brendan@example.com\", password: \"password123\") {\n    id\n    username\n    email\n  }\n}",
+						"query": "mutation {\n  signup(username: \"apollo\", email: \"apollo@example.com\", password: \"password123\") {\n    id\n    username\n    email\n  }\n}",
 						"variables": ""
 					}
 				},
@@ -40,7 +40,33 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "query {\n  login(username: \"brendan\", password: \"password\") {\n    token\n    user {\n      id\n      username\n    }\n  }\n}",
+						"query": "mutation {\n  login(username: \"brendan\", password: \"password123\") {\n    token\n    user {\n      id\n      username\n    }\n  }\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4000/graphql",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4000",
+					"path": [
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Logout",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation {\n  logout\n}",
 						"variables": ""
 					}
 				},

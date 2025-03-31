@@ -14,7 +14,7 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "mutation {\n  addEmployee(\n    first_name: \"Apollo\"\n    last_name: \"Johnson\"\n    email: \"apojohn@example.com\"\n    gender: \"Male\"\n    designation: \"Full Stack Developer\"\n    salary: 10000\n    date_of_joining: \"2024-01-10\"\n    department: \"Software\"\n    employee_photo: \"uploads/apojohn.jpg\"\n  ) {\n    id\n    first_name\n    last_name\n    email\n  }\n}",
+						"query": "mutation {\n  addEmployee(\n    first_name: \"Phil\"\n    last_name: \"Coulson\"\n    email: \"philc@example.com\"\n    gender: \"Male\"\n    designation: \"Agent\"\n    salary: 100000\n    date_of_joining: \"2024-03-30\"\n    department: \"Security\"\n  ) {\n    id\n    first_name\n    last_name\n    email\n  }\n}",
 						"variables": ""
 					}
 				},
@@ -66,7 +66,7 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "query {\n  getEmployeeByEID(id: \"67aca3c731d5ece3730a69ba\") {\n    id\n    first_name\n    last_name\n    email\n    designation\n  }\n}",
+						"query": "query {\n  getEmployeeByEID(id: \"67accedfbfe7c9ca8618c190\") {\n    id\n    first_name\n    last_name\n    email\n    designation\n  }\n}",
 						"variables": ""
 					}
 				},
@@ -118,7 +118,7 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "mutation {\n  updateEmployee(\n    id: \"67aca3c731d5ece3730a69ba\",\n    salary: 250000,\n    designation: \"Senior Software Engineer\"\n  ) {\n    id\n    first_name\n    last_name\n    salary\n    designation\n  }\n}",
+						"query": "mutation {\n  updateEmployee(\n    id: \"67accedfbfe7c9ca8618c190\",\n    salary: 250000,\n    designation: \"Senior Software Engineer\"\n  ) {\n    id\n    first_name\n    last_name\n    salary\n    designation\n  }\n}",
 						"variables": ""
 					}
 				},
@@ -144,7 +144,7 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "mutation {\n  deleteEmployee(id: \"67aca3c731d5ece3730a69ba\")\n}",
+						"query": "mutation {\n  deleteEmployee(id: \"67accedfbfe7c9ca8618c190\")\n}",
 						"variables": ""
 					}
 				},
