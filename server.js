@@ -2,6 +2,7 @@ const express = require("express");
 const { ApolloServer } = require("@apollo/server");
 const { expressMiddleware } = require("@apollo/server/express4");
 const { makeExecutableSchema } = require("@graphql-tools/schema");
+const { graphqlUploadExpress } = require("graphql-upload");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
@@ -21,6 +22,8 @@ app.use(
     credentials: true,
   })
 );
+app.use(graphqlUploadExpress({ maxFileSize: 5 * 1024 * 1024, maxFiles: 1 }));
+
 app.use(express.json());
 app.use(cookieParser());
 
