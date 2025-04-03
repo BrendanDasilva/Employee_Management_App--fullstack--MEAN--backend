@@ -7,6 +7,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
+const { GraphQLUpload } = require("graphql-upload");
 const upload = require("./middlewares/upload");
 
 // Load .env config
@@ -30,14 +31,6 @@ app.use(cookieParser());
 // Static image route
 app.use("/uploads", express.static("uploads"));
 
-// Upload endpoint for testing with Postman
-app.post("/upload", upload.single("employee_photo"), (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ message: "No file uploaded" });
-  }
-  res.json({ filePath: `uploads/employees/${req.file.filename}` });
-});
-
 // Combine typeDefs and resolvers
 const schema = makeExecutableSchema({
   typeDefs: [
@@ -45,6 +38,7 @@ const schema = makeExecutableSchema({
     require("./schemas/employeeSchema"),
   ],
   resolvers: [
+    { Upload: GraphQLUpload }, // Add the Upload resolver
     require("./resolvers/userResolver"),
     require("./resolvers/employeeResolver"),
   ],

@@ -1,7 +1,8 @@
 const { gql } = require("apollo-server-express");
 
-// Employee type definitions
 const employeeTypeDefs = gql`
+  scalar Upload
+
   type Employee {
     id: ID!
     first_name: String!
@@ -33,7 +34,7 @@ const employeeTypeDefs = gql`
       salary: Float!
       date_of_joining: String!
       department: String!
-      employee_photo: String
+      employee_photo: Upload
     ): Employee
 
     updateEmployee(
@@ -44,12 +45,11 @@ const employeeTypeDefs = gql`
       designation: String
       salary: Float
       department: String
-      employee_photo: String
+      employee_photo: Upload
     ): Employee
 
     deleteEmployee(id: ID!): String
   }
 `;
 
-// Export the employeeTypeDefs
 module.exports = employeeTypeDefs;
