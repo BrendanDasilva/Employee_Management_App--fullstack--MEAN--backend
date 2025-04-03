@@ -13,6 +13,8 @@ const upload = require("./middlewares/upload");
 // Load .env config
 dotenv.config({ path: "./config.env" });
 
+const PORT = process.env.PORT || 4000;
+
 const app = express();
 connectDB();
 
@@ -59,8 +61,8 @@ async function startServer() {
     })
   );
 
-  app.listen(4000, () => {
-    console.log("Server running at http://localhost:4000/graphql");
+  app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}/graphql`);
   });
 }
 
