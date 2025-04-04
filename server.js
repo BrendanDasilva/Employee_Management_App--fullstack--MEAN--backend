@@ -26,6 +26,7 @@ app.use(
       "https://employee-management-app-101447806.vercel.app",
     ],
     credentials: true,
+    methods: ["GET", "POST", "OPTIONS"],
   })
 );
 app.use(graphqlUploadExpress({ maxFileSize: 5 * 1024 * 1024, maxFiles: 1 }));
