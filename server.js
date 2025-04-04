@@ -21,7 +21,10 @@ connectDB();
 // CORS and JSON/body/cookie middleware
 app.use(
   cors({
-    origin: "http://localhost:4200",
+    origin: [
+      "http://localhost:4200",
+      "https://employee-management-app-101447806.vercel.app",
+    ],
     credentials: true,
   })
 );
