@@ -22,33 +22,27 @@ module.exports = {
   Mutation: {
     signup: async (_, { username, email, password }) => {
       try {
-        // Normalize inputs
         username = username.trim().toLowerCase();
         email = email.trim().toLowerCase();
 
-        // Validate required fields
         if (!username || !email || !password) {
           throw new Error("Username, email, and password are required.");
         }
 
-        // Username validation
         if (username.length < 3 || username.length > 25) {
           throw new Error("Username must be between 3 and 25 characters.");
         }
 
-        // Email format
         if (!validator.isEmail(email)) {
           throw new Error("Invalid email format.");
         }
 
-        // Password strength
         if (!validator.isLength(password, { min: 6 }) || !/\d/.test(password)) {
           throw new Error(
             "Password must be at least 6 characters long and contain at least one number."
           );
         }
 
-        // Check uniqueness
         const existingUser = await User.findOne({
           $or: [{ username }, { email }],
         });
@@ -56,7 +50,6 @@ module.exports = {
           throw new Error("Username or email already in use.");
         }
 
-        // Hash and save
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = new User({ username, email, password: hashedPassword });
 
@@ -84,12 +77,11 @@ module.exports = {
           expiresIn: "1d",
         });
 
-        // HttpOnly cookie
         res.cookie("token", token, {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
-          sameSite: "Lax",
-          maxAge: 24 * 60 * 60 * 1000, // 1 day
+          secure: true, // required for SameSite: 'None'
+          sameSite: "None", // this is the critical change
+          maxAge: 24 * 60 * 60 * 1000,
         });
 
         return { token, user };
@@ -107,8 +99,8 @@ module.exports = {
 
         res.clearCookie("token", {
           httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
-          sameSite: "Lax",
+          secure: true,
+          sameSite: "None",
         });
 
         return true;
