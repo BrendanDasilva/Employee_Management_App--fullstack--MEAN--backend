@@ -7,7 +7,8 @@ module.exports = {
   Query: {
     me: async (_, __, { req }) => {
       try {
-        const token = req.cookies.token;
+        const authHeader = req.headers.authorization || "";
+        const token = authHeader.replace("Bearer ", "");
         if (!token) return null;
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -60,7 +61,7 @@ module.exports = {
       }
     },
 
-    login: async (_, { username, password }, { res }) => {
+    login: async (_, { username, password }) => {
       try {
         if (!username || !password) {
           throw new Error("Username and password are required.");
@@ -77,13 +78,6 @@ module.exports = {
           expiresIn: "1d",
         });
 
-        res.cookie("token", token, {
-          httpOnly: true,
-          secure: true, // required for SameSite: 'None'
-          sameSite: "None", // this is the critical change
-          maxAge: 24 * 60 * 60 * 1000,
-        });
-
         return { token, user };
       } catch (error) {
         console.error(`Error during login: ${error.message}`);
@@ -91,23 +85,8 @@ module.exports = {
       }
     },
 
-    logout: async (_, __, { res, req }) => {
-      try {
-        if (!req.cookies.token) {
-          throw new Error("No active session");
-        }
-
-        res.clearCookie("token", {
-          httpOnly: true,
-          secure: true,
-          sameSite: "None",
-        });
-
-        return true;
-      } catch (error) {
-        console.error(`Logout error: ${error.message}`);
-        throw new Error(error.message);
-      }
+    logout: async () => {
+      return true;
     },
   },
 };
