@@ -1,13 +1,25 @@
-const Employee = require("../models/Employee");
-const fs = require("fs");
-const path = require("path");
-const mongoose = require("mongoose");
+// ========================
+// Dependencies
+// ========================
+const Employee = require("../models/Employee"); // Mongoose model for Employee
+const fs = require("fs"); // File system for deleting old photos
+const path = require("path"); // Path utilities
+const mongoose = require("mongoose"); // To validate ObjectId
 
+// ========================
+// Employee GraphQL Resolvers
+// ========================
 module.exports = {
+  // ------------------------
+  // QUERY RESOLVERS
+  // ------------------------
   Query: {
+    // Get all employees
     getAllemployees: async () => {
       return await Employee.find();
     },
+
+    // Get a single employee by MongoDB ObjectId
     getEmployeeByEID: async (_, { id }) => {
       const employee = await Employee.findById(id);
       if (!employee) {
@@ -15,6 +27,8 @@ module.exports = {
       }
       return employee;
     },
+
+    // Search employees by designation and/or department
     searchEmployees: async (_, { designation, department }) => {
       let filter = {};
       if (designation) filter.designation = designation;
@@ -28,20 +42,24 @@ module.exports = {
     },
   },
 
+  // ------------------------
+  // MUTATION RESOLVERS
+  // ------------------------
   Mutation: {
+    // ===== ADD EMPLOYEE =====
     addEmployee: async (_, args, { req }) => {
       try {
-        // Normalize input
+        // Normalize basic inputs
         args.first_name = args.first_name.trim();
         args.last_name = args.last_name.trim();
         args.email = args.email.toLowerCase().trim();
 
-        // Handle file upload
+        // Handle image upload (if provided)
         if (req.file) {
           args.employee_photo = `uploads/employees/${req.file.filename}`;
         }
 
-        // Validation
+        // Validate required fields
         const requiredFields = [
           "first_name",
           "last_name",
@@ -58,11 +76,13 @@ module.exports = {
           }
         }
 
+        // Ensure email is unique
         const existingEmployee = await Employee.findOne({ email: args.email });
         if (existingEmployee) {
           throw new Error(`Employee with email ${args.email} already exists.`);
         }
 
+        // Save employee
         const employee = new Employee(args);
         return await employee.save();
       } catch (error) {
@@ -71,6 +91,7 @@ module.exports = {
       }
     },
 
+    // ===== UPDATE EMPLOYEE =====
     updateEmployee: async (_, { id, ...args }, { req }) => {
       try {
         const employee = await Employee.findById(id);
@@ -78,9 +99,8 @@ module.exports = {
           throw new Error(`Employee with ID ${id} not found.`);
         }
 
-        // Handle file upload
+        // Handle file upload (replace old photo if exists)
         if (req.file) {
-          // Delete old photo if exists
           if (employee.employee_photo) {
             const oldPhotoPath = path.join(
               __dirname,
@@ -92,14 +112,16 @@ module.exports = {
           args.employee_photo = `uploads/employees/${req.file.filename}`;
         }
 
-        // Normalize input
+        // Normalize updated fields
         if (args.first_name) args.first_name = args.first_name.trim();
         if (args.last_name) args.last_name = args.last_name.trim();
         if (args.email) args.email = args.email.toLowerCase().trim();
 
+        // Update and return the new employee document
         const updatedEmployee = await Employee.findByIdAndUpdate(id, args, {
           new: true,
         });
+
         if (!updatedEmployee) {
           throw new Error("Error updating employee. Please try again.");
         }
@@ -111,8 +133,10 @@ module.exports = {
       }
     },
 
+    // ===== DELETE EMPLOYEE =====
     deleteEmployee: async (_, { id }) => {
       try {
+        // Validate ObjectId format
         if (!mongoose.Types.ObjectId.isValid(id)) {
           throw new Error(`Invalid employee ID: ${id}`);
         }
@@ -122,6 +146,7 @@ module.exports = {
           throw new Error(`Employee with ID ${id} not found.`);
         }
 
+        // Delete employee from DB
         await Employee.findByIdAndDelete(id);
         return `Employee with ID ${id} has been deleted successfully.`;
       } catch (error) {
